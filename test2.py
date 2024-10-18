@@ -18,11 +18,11 @@ from lxml import html
 from datetime import datetime, timedelta
 from collections import OrderedDict
 from PIL import Image,ImageDraw,ImageFont
-
+from discord import app_commands
 
 CHANNEL_ID =1294151296667881483
 # twohourslater_str = None
-url="https://soccer.yahoo.co.jp/jleague/category/j1/schedule/31312/9/?gk=2"
+url="https://soccer.yahoo.co.jp/jleague/"
 matchtimes=[
     
 ]
@@ -315,12 +315,13 @@ intents.reactions = True
 intents.guilds = True
 intents=discord.Intents.default()
 intents.message_content=True
-bot=commands.Bot(command_prefix='!', intents=intents)
+
 client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
 
 @client.event
 async def on_ready():
-    
+    await tree.sync()
     print('ログインしました')
     @tasks.loop(seconds=60)
     async def loop():
@@ -340,4 +341,21 @@ async def on_ready():
           #       await check()
           #       print("check() が実行されました")
     loop.start()
+@tree.command(name="cs",description="checkscore")
+async def test_command(interaction: discord.Interaction):
+    try:
+        # 初回応答を即時送信し、タイムアウトを回避
+        await interaction.response.send_message("試合結果を取得中です...")
+
+        # メッセージを取得し、順次送信
+        messages = await scoreget()
+        for message in messages:
+            try:
+                await interaction.followup.send(file=discord.File(message))
+            except discord.errors.NotFound:
+                print("フォローアップのWebhookが無効です。")
+    except Exception as e:
+        # その他の予期しないエラーに対応
+        print(f"エラーが発生しました: {e}") 
+
 client.run(token)
