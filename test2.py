@@ -325,37 +325,24 @@ async def on_ready():
     print('ログインしました')
     @tasks.loop(seconds=60)
     async def loop():
-        # print(f"現在の時間: {now}, 2時間半後の時間: {twohourslater_str}")
-          # now =datetime.now().strftime('%H:%M')
-          channel = client.get_channel(CHANNEL_ID)
-          # message=await scoreget()
-          # for messages in message:  # 各試合ごとにメッセージを送信
-          messages = await scoreget()  # 全試合結果を取得
-          for message in messages:  # 各試合ごとにメッセージを
-              if message not in sentfile:
-                await channel.send(file=discord.File(message))
-                sentfile.add(message)
+          try:
+            # print(f"現在の時間: {now}, 2時間半後の時間: {twohourslater_str}")
+            # now =datetime.now().strftime('%H:%M')
+            channel = client.get_channel(CHANNEL_ID)
+            # message=await scoreget()
+            # for messages in message:  # 各試合ごとにメッセージを送信
+            messages = await scoreget()  # 全試合結果を取得
+            for message in messages:  # 各試合ごとにメッセージを
+               if message not in sentfile:
+                 await channel.send(file=discord.File(message))
+                 sentfile.add(message)
 
-              await asyncio.sleep(1)
+               await asyncio.sleep(1)
+          except:
+              print('error')
           # if "11:00" == now:
           #       await check()
           #       print("check() が実行されました")
     loop.start()
-@tree.command(name="cs",description="checkscore")
-async def test_command(interaction: discord.Interaction):
-    try:
-        # 初回応答を即時送信し、タイムアウトを回避
-        await interaction.response.send_message("試合結果を取得中です...")
-
-        # メッセージを取得し、順次送信
-        messages = await scoreget()
-        for message in messages:
-            try:
-                await interaction.followup.send(file=discord.File(message))
-            except discord.errors.NotFound:
-                print("フォローアップのWebhookが無効です。")
-    except Exception as e:
-        # その他の予期しないエラーに対応
-        print(f"エラーが発生しました: {e}") 
 
 client.run(token)
