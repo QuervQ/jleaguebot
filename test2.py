@@ -22,7 +22,7 @@ from discord import app_commands
 
 CHANNEL_ID =1294151296667881483
 # twohourslater_str = None
-url="https://soccer.yahoo.co.jp/jleague/category/j1/schedule/31312/33/?gk=2"
+url="https://soccer.yahoo.co.jp/jleague/"
 matchtimes=[
     
 ]
@@ -40,12 +40,14 @@ font1 = ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 60)
 font3 = ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 25)
 sentfile=set()
 async def fetch_image(url: str, filename: str):
+    folder = "images"
+    filepath = os.path.join(folder, filename)
     try:
       """非同期で画像をダウンロードする"""
       async with aiohttp.ClientSession() as session:
            async with session.get(url) as response:
              if response.status == 200:
-                with open(filename, 'wb') as f:
+                with open(filepath, 'wb') as f:
                     f.write(await response.read())
                     print(f"画像 {filename} をダウンロードしました。")
     except:
