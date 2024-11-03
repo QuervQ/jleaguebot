@@ -22,7 +22,7 @@ from discord import app_commands
 
 CHANNEL_ID =1294151296667881483
 # twohourslater_str = None
-url="https://soccer.yahoo.co.jp/jleague/"
+url="https://soccer.yahoo.co.jp/jleague/category/j1/schedule/31312/33/?gk=2"
 matchtimes=[
     
 ]
@@ -40,13 +40,16 @@ font1 = ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 60)
 font3 = ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 25)
 sentfile=set()
 async def fetch_image(url: str, filename: str):
-    """非同期で画像をダウンロードする"""
-    async with aiohttp.ClientSession() as session:
+    try:
+      """非同期で画像をダウンロードする"""
+      async with aiohttp.ClientSession() as session:
            async with session.get(url) as response:
              if response.status == 200:
                 with open(filename, 'wb') as f:
                     f.write(await response.read())
                     print(f"画像 {filename} をダウンロードしました。")
+    except:
+        print('error')
 async def scoreget():
       results = []
       linkss = []
@@ -70,7 +73,8 @@ async def scoreget():
           print(linkss)
       except:
           print('リンクが取得できませんでした')
-      for onelink in linkss:
+      try:
+        for onelink in linkss:
           res = requests.get(onelink)
           soup = BeautifulSoup(res.text, 'html.parser')
           cnvrtdate=html.fromstring(str(soup))
@@ -105,33 +109,32 @@ async def scoreget():
   
           imageh=responseh.content
           imagea=responsea.content
+                                                                  #  /html/body/div/main/div[2]/div[3]/section/table/tbody/tr[1]/td[1]
+          findstatshome1=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[1]/td[1]')
+          findstatshome2=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[2]/td[1]')
+          findstatshome3=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[3]/td[1]')
+          findstatshome4=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[4]/td[1]')
+          findstatshome5=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[5]/td[1]')
+          findstatshome6=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[6]/td[1]')
+          findstatshome7=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[7]/td[1]')
+          findstatshome8=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[8]/td[1]')
+          findstatshome9=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[9]/td[1]')
+          findstatshome10=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[10]/td[1]')
+          findstatcardyshome11=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[11]/td[1]/p[1]')
+          findstatcardrhome12=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[11]/td[1]/p[2]')
   
-  
-          findstatshome1=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[1]/td[1]')
-          findstatshome2=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[2]/td[1]')
-          findstatshome3=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[3]/td[1]')
-          findstatshome4=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[4]/td[1]')
-          findstatshome5=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[5]/td[1]')
-          findstatshome6=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[6]/td[1]')
-          findstatshome7=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[7]/td[1]')
-          findstatshome8=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[8]/td[1]')
-          findstatshome9=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[9]/td[1]')
-          findstatshome10=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[10]/td[1]')
-          findstatcardyshome11=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[11]/td[1]/p[1]')
-          findstatcardrhome12=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[11]/td[1]/p[2]')
-  
-          findstatsaway1=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[1]/td[2]')
-          findstatsaway2=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[2]/td[2]')
-          findstatsaway3=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[3]/td[2]')
-          findstatsaway4=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[4]/td[2]')
-          findstatsaway5=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[5]/td[2]')
-          findstatsaway6=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[6]/td[2]')
-          findstatsaway7=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[7]/td[2]')
-          findstatsaway8=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[8]/td[2]')
-          findstatsaway9=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[9]/td[2]')
-          findstatsaway10=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[10]/td[2]')
-          findstatcardyaway11=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[11]/td[2]/p[1]')
-          findstatcardraway12=cnvrtdate.xpath('/html/body/div/main/div[2]/div[4]/section/table/tbody/tr[11]/td[2]/p[2]')
+          findstatsaway1=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[1]/td[2]')
+          findstatsaway2=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[2]/td[2]')
+          findstatsaway3=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[3]/td[2]')
+          findstatsaway4=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[4]/td[2]')
+          findstatsaway5=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[5]/td[2]')
+          findstatsaway6=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[6]/td[2]')
+          findstatsaway7=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[7]/td[2]')
+          findstatsaway8=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[8]/td[2]')
+          findstatsaway9=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[9]/td[2]')
+          findstatsaway10=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[10]/td[2]')
+          findstatcardyaway11=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[11]/td[2]/p[1]')
+          findstatcardraway12=cnvrtdate.xpath('/html/body/div/main/div[2]/div[3]/section/table/tbody/tr[11]/td[2]/p[2]')
   
           zennhannhomescore=cnvrtdate.xpath('/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[2]/table/tbody/tr[1]/td[2]')
           zennhannawayscore=cnvrtdate.xpath('/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[2]/table/tbody/tr[1]/td[4]')
@@ -140,10 +143,12 @@ async def scoreget():
           info=cnvrtdate.xpath('/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[2]/div/p')
           studium = cnvrtdate.xpath('/html/body/div/main/div[2]/section[13]/table/tbody/tr[1]/td')
           human=cnvrtdate.xpath('/html/body/div/main/div[2]/section[13]/table/tbody/tr[2]/td[1]')
-  
-          for p in findscore:
+      except:
+        print("error")
+
+      try:
+        for p in findscore:
               img = Image.open('stats.png').convert('RGBA')
-              
               draw = ImageDraw.Draw(img)
               
               time_str = p.text
@@ -241,18 +246,30 @@ async def scoreget():
                             draw.text((80,340),homestats3,'white',font=font,align='center')
                             draw.text((220,340),"枠内シュート",'white',font=font,align='center')
                             draw.text((470,340),awaystats3,'white',font=font,align='center')
-  
-                            draw.text((20,390),homestats4,'white',font=font3,align='center')#
+                            if homestats4=='-':
+                                draw.text((80,390),homestats4,'white',font=font3,align='center')#
+                            else:
+                              draw.text((20,390),homestats4,'white',font=font3,align='center')#
                             draw.text((240,390),"走行距離",'white',font=font,align='center')
-                            draw.text((410,390),awaystats4,'white',font=font3,align='center')#
+                            if awaystats4=='-':
+                                draw.text((470,390),awaystats4,'white',font=font3,align='center')#
+                            else:
+                              draw.text((410,390),awaystats4,'white',font=font3,align='center')#
+
   
                             draw.text((80,440),homestats5,'white',font=font,align='center')
                             draw.text((230,440),"スプリント",'white',font=font,align='center')
                             draw.text((470,440),awaystats5,'white',font=font,align='center')
   
-                            draw.text((20,490),homestats6,'white',font=font3,align='center')
+                            if homestats6=='-':
+                              draw.text((80,490),homestats6,'white',font=font3,align='center')#
+                            else:
+                              draw.text((20,490),homestats6,'white',font=font3,align='center')#
                             draw.text((210,490),"パス（成功率）",'white',font=font,align='center')
-                            draw.text((420,490),awaystats6,'white',font=font3,align='center')
+                            if awaystats6=='-':
+                              draw.text((470,490),awaystats6,'white',font=font3,align='center')#
+                            else:
+                              draw.text((420,490),awaystats6,'white',font=font3,align='center')#
   
                             draw.text((80,540),homestats7,'white',font=font,align='center')
                             draw.text((230,540),"オフサイド",'white',font=font,align='center')
@@ -305,6 +322,8 @@ async def scoreget():
                             imgs.save(image_filename)
                             # img.save("result.jpg")
                             # return image_filename
+      except:
+        print('error2')
       return imagess
                             
                   
@@ -323,7 +342,7 @@ tree = app_commands.CommandTree(client)
 async def on_ready():
     await tree.sync()
     print('ログインしました')
-    @tasks.loop(seconds=60)
+    @tasks.loop(seconds=120)
     async def loop():
           try:
             # print(f"現在の時間: {now}, 2時間半後の時間: {twohourslater_str}")
@@ -339,7 +358,7 @@ async def on_ready():
 
                await asyncio.sleep(1)
           except:
-              print('error')
+              print('error3')
           # if "11:00" == now:
           #       await check()
           #       print("check() が実行されました")
