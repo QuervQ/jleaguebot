@@ -40,18 +40,16 @@ font1 = ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 60)
 font3 = ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 25)
 sentfile=set()
 async def fetch_image(url: str, filename: str):
-    folder = "images"
-    filepath = os.path.join(folder, filename)
     try:
       """非同期で画像をダウンロードする"""
       async with aiohttp.ClientSession() as session:
            async with session.get(url) as response:
              if response.status == 200:
-                with open(filepath, 'wb') as f:
+                with open(filename, 'wb') as f:
                     f.write(await response.read())
                     print(f"画像 {filename} をダウンロードしました。")
-    except:
-        print('error')
+    except Exception as e:
+        print(e)
 async def scoreget():
       results = []
       linkss = []
@@ -75,8 +73,7 @@ async def scoreget():
           print(linkss)
       except:
           print('リンクが取得できませんでした')
-      try:
-        for onelink in linkss:
+      for onelink in linkss:
           res = requests.get(onelink)
           soup = BeautifulSoup(res.text, 'html.parser')
           cnvrtdate=html.fromstring(str(soup))
@@ -145,11 +142,7 @@ async def scoreget():
           info=cnvrtdate.xpath('/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[2]/div/p')
           studium = cnvrtdate.xpath('/html/body/div/main/div[2]/section[13]/table/tbody/tr[1]/td')
           human=cnvrtdate.xpath('/html/body/div/main/div[2]/section[13]/table/tbody/tr[2]/td[1]')
-      except:
-        print("error")
-
-      try:
-        for p in findscore:
+          for p in findscore:
               img = Image.open('stats.png').convert('RGBA')
               draw = ImageDraw.Draw(img)
               
@@ -324,8 +317,6 @@ async def scoreget():
                             imgs.save(image_filename)
                             # img.save("result.jpg")
                             # return image_filename
-      except:
-        print('error2')
       return imagess
                             
                   
@@ -355,12 +346,12 @@ async def on_ready():
             messages = await scoreget()  # 全試合結果を取得
             for message in messages:  # 各試合ごとにメッセージを
                if message not in sentfile:
-                 await channel.send(file=discord.File(message))
+                 await channel.send(file=discord.File(f"{message}"))
                  sentfile.add(message)
 
                await asyncio.sleep(1)
-          except:
-              print('error3')
+          except Exception as e:
+              print(e)
           # if "11:00" == now:
           #       await check()
           #       print("check() が実行されました")
