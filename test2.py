@@ -71,9 +71,10 @@ async def scoreget():
           
           linkss = list(unique_links.keys())  # 重複のないリンクのリストを取得
           print(linkss)
-      except:
-          print('リンクが取得できませんでした')
-      for onelink in linkss:
+      except Exception as e:
+          print(e)
+      try:    
+        for onelink in linkss:
           res = requests.get(onelink)
           soup = BeautifulSoup(res.text, 'html.parser')
           cnvrtdate=html.fromstring(str(soup))
@@ -317,6 +318,8 @@ async def scoreget():
                             imgs.save(image_filename)
                             # img.save("result.jpg")
                             # return image_filename
+      except Exception as e:
+        print(e)
       return imagess
                             
                   
