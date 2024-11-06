@@ -91,6 +91,7 @@ async def scoreget():
           # findstats=soup.find_all("td",class_=['sc-tableVersus__data--away']
               
           logohome=driver.find_element(By.XPATH,"/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[1]/div[1]/a/span").value_of_css_property('background-image')
+          
           logoaway = driver.find_element(By.XPATH,"/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[3]/div[1]/a/span").value_of_css_property('background-image')
   
           homematch= re.search(r'url\("(.*?)"\)', logohome)
@@ -143,6 +144,7 @@ async def scoreget():
           info=cnvrtdate.xpath('/html/body/div/main/div[2]/section[2]/div/div/div/div[2]/div[2]/div/p')
           studium = cnvrtdate.xpath('/html/body/div/main/div[2]/section[13]/table/tbody/tr[1]/td')
           human=cnvrtdate.xpath('/html/body/div/main/div[2]/section[13]/table/tbody/tr[2]/td[1]')
+          
           for p in findscore:
               img = Image.open('stats.png').convert('RGBA')
               draw = ImageDraw.Draw(img)
