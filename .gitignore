@@ -2,3 +2,5 @@
 chromedriver 
 bot
 images
+twitter_key.json
+config.py
