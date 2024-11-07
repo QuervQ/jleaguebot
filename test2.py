@@ -21,7 +21,6 @@ from collections import OrderedDict
 from PIL import Image,ImageDraw,ImageFont
 from discord import app_commands
 import tweepy
-import config
 
 CHANNEL_ID =1294151296667881483
 # twohourslater_str = None
