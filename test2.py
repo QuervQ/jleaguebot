@@ -187,8 +187,8 @@ async def scoreget():
                   
                   if infos == '試合終了':
                     draw = ImageDraw.Draw(img)
-                    home_image = f"{logourlh.split('/')[-1]}.png"
-                    away_image = f"{logourla.split('/')[-1]}.png"
+                    home_image = f"{logourlh.split('/')[-1]}"
+                    away_image = f"{logourla.split('/')[-1]}"
                     await fetch_image(logourlh, home_image)
                     await fetch_image(logourla, away_image)
                     imglistsh=Image.open(home_image).convert('RGBA')
