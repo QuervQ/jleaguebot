@@ -40,7 +40,7 @@ options = Options()
 options.add_argument('--headless')
 global nowtime
 global driver
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(options=options)#
 driver.implicitly_wait(10)
 scoreandmatchtime={}
 font4=ImageFont.truetype('ヒラギノ角ゴシック_W9.ttc', 15)
@@ -300,7 +300,7 @@ async def scoreget():
                     draw.text((450,740),awaystats11,'white',font=font,align='center')
                     draw.text((130,740),homestats12,'white',font=font,align='center')
                     draw.text((520,740),awaystats12,'white',font=font,align='center')
-                    draw.text((10,970),'Create By @Quervo9e','white',font=font,align='center')
+                    draw.text((10,950),'Create By @Quervo9e','white',font=font,align='center')
                     result_message = f"{home_team} {home_score} - {away_score} {away_team}\n{homestats1+'ボール支配率'+awaystats1}\n{homestats2+'シュート'+awaystats2}\n{homestats3+'枠内シュート'+awaystats3}\n{homestats4+'走行距離'+awaystats4}\n{homestats5+'スプリント'+awaystats5}\n{homestats6+'パス（成功率）' + awaystats6}\n{homestats7+'オフサイド'+awaystats7}\n{homestats8+'フリーキック'+awaystats8}\n{homestats9+'コーナーキック'+awaystats9}\n{homestats10+'ペナルティキック'+awaystats10}\n{'ホームイエローカード'+homestats11}\n{'ホームレッドカード'+homestats12}\n{'アウェイイエローカード'+awaystats11}\n{'アウェイレッドカード'+awaystats12}\n"
                     results.append(result_message)  # 各試合結果をリストに追
                     global image_filename
@@ -347,11 +347,17 @@ intents.message_content=True
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
+@tree.command(name='cs',description='Jリーグの試合結果を返します')
+async def check (interaction:discord.Interaction):
+   messages= await scoreget()
+   for message in messages:
+      await interaction.response.defer()
+      await interaction.followup.send(file=discord.File(io.BytesIO(message),filename='unko.png'))
 @client.event
 async def on_ready():
     await tree.sync()
     print('ログインしました')
-    @tasks.loop(seconds=120)
+    @tasks.loop(seconds=60)
     async def loop():
           try:
             # print(f"現在の時間: {now}, 2時間半後の時間: {twohourslater_str}")
@@ -361,18 +367,21 @@ async def on_ready():
             # for messages in message:  # 各試合ごとにメッセージを送信
             messages = await scoreget()  # 全試合結果を取得
             for message in messages:  # 各試合ごとにメッセージを
-              #  if message not in sentfile:
+               if message not in sentfile:
                  await channel.send(file=discord.File(io.BytesIO(message),filename='unko.png'))
-                 
-                  # sentfile.add(message)
-                 media = api.media_upload(filename='image.png', file=io.BytesIO(message))
-                 clientx. create_tweet ( media_ids= [media.media_id])
-                 messages.remove(message)
+                 await asyncio.sleep(3)
+                 try:
+                    media = api.media_upload(filename='image.png', file=io.BytesIO(message))
+                    clientx.create_tweet(media_ids=[media.media_id])
+                 except Exception as e:
+                    print(f"Twitter API Error: {e}")
+                 sentfile.add(message)
+                #  messages.remove(message)
 
 
 
 
-                 await asyncio.sleep(15)
+                 await asyncio.sleep(10)
           except Exception as e:
               print(e)
           # if "11:00" == now:
