@@ -21,6 +21,7 @@ from collections import OrderedDict
 from PIL import Image,ImageDraw,ImageFont
 from discord import app_commands
 import tweepy
+from keep_alive import keep_alive
 
 CHANNEL_ID =1294151296667881483
 # twohourslater_str = None
@@ -388,5 +389,5 @@ async def on_ready():
           #       await check()
           #       print("check() が実行されました")
     loop.start()
-
+keep_alive()
 client.run(token)

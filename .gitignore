@@ -4,3 +4,4 @@ bot
 images
 twitter_key.json
 config.py
+__pycache__
